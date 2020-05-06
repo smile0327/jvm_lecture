@@ -59,6 +59,10 @@ public class MyTest4 {
         boolean[] booleans = new boolean[1];
         System.out.println(booleans.getClass());
 
+        String[] strings = new String[1];
+        System.out.println(strings.getClass());
+        System.out.println(strings.getClass().getClassLoader());
+
     }
 
 }
