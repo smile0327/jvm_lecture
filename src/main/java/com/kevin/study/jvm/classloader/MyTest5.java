@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class MyTest5 {
     public static void main(String[] args) {
-        System.out.println(MyChild5.b);
+        System.out.println(MyChild5.a);
     }
 }
 
