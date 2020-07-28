@@ -22,7 +22,7 @@ public class MyTest4 {
 
         /*
             2、对于数组实例来说，其类型是由JVM在运行期动态生成的，表示为 [Lcom.kevin.study.jvm.classloader.MyParent4 这中形式，
-                动态生成的类型，其父类型就是Object 。
+                动态生成的类型，其父类型就是Object 。如果元素类型是原生类型（基本类型），那么这个数组类是没有类加载器的。
 
                 对于数组来说，JavaDoc经常将构成数组的元素定义为Component（组件），实际上就是将数组降低一个维度后的类型。
          */

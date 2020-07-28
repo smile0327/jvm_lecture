@@ -47,11 +47,6 @@ public class MyTest16 extends ClassLoader {
         return this.defineClass(name , data , 0 , data.length);
     }
 
-    @Override
-    public String toString() {
-        return "[" + this.classLoaderName + "]";
-    }
-
     /**
      * 从指定路径加载文件
      * @param name
@@ -94,11 +89,13 @@ public class MyTest16 extends ClassLoader {
     public static void test(ClassLoader classLoader) throws Exception {
         Class<?> clazz = classLoader.loadClass("com.kevin.study.jvm.classloader.MyTest1");
         Object instance = clazz.newInstance();  //创建类的实例
+        //通过输出结果可以看到，MyTest1 是由应用类加载器加载的
         System.out.println(instance);
         System.out.println(instance.getClass().getClassLoader());
     }
 
     public static void main(String[] args) throws Exception {
+        //MyTest16 的父类加载器就是系统类加载器，根据双亲委托机制，加载类时会先委托给父类加载器去加载
         MyTest16 loader1 = new MyTest16("loader1");
         /*
             从本地文件系统加载一个class文件   删除classPath中的class文件,可以看到是由当前类加载器加载的，而不是系统类加载器加载的
@@ -114,13 +111,10 @@ public class MyTest16 extends ClassLoader {
         System.out.println("----------------");
 
         //模拟类的卸载 -XX:+TraceClassUnloading
-        loader1 = null;
-        clazz = null;
-        instance = null;
-
-        System.gc();
-
-//        Thread.sleep(100000);
+//        loader1 = null;
+//        clazz = null;
+//        instance = null;
+//        System.gc();
 
         loader1 = new MyTest16("loader1");
         loader1.setPath("D:\\study\\jvm\\");

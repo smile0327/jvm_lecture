@@ -12,12 +12,23 @@ import java.util.Random;
  * @ProjectName: jvm_lecture
  */
 public class MyTest5 {
+
     public static void main(String[] args) {
-        System.out.println(MyChild5.a);
+//        System.out.println(MyChild5.b);
+        System.out.println(MyParent5_1.thread);
     }
 }
 
-interface MyParent5 {
+class MyGrandpa5{
+    public static Thread thread = new Thread() {
+        //代码块  创建该对象的实例时就会执行
+        {
+            System.out.println("MyGrandpa invoked");
+        }
+    };
+}
+
+class MyParent5 extends MyGrandpa5{
     //接口中定义的常量默认就是 public static final 修饰的 可以省略不写
     public static int a = 5;
     //    public static int a = new Random().nextInt(5);
@@ -29,7 +40,27 @@ interface MyParent5 {
     };
 }
 
-class MyChild5 implements MyParent5 {
+class MyChild5 extends MyParent5 {
     public static int b = 6;
 //    public static int b = new Random().nextInt(4);
+}
+
+/****************************/
+
+interface MyGrandpa5_1 {
+    public static Thread thread = new Thread() {
+        //代码块  创建该对象的实例时就会执行
+        {
+            System.out.println("MyGrandpa5_1 invoked");
+        }
+    };
+}
+
+interface MyParent5_1 extends MyGrandpa5_1{
+    public static Thread thread = new Thread() {
+        //代码块  创建该对象的实例时就会执行
+        {
+            System.out.println("MyParent5_1 invoked");
+        }
+    };
 }
