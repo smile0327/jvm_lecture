@@ -24,7 +24,7 @@ import java.util.ServiceLoader;
  *  myMethod方法里面调用Thread.currentThread().getContextClassLoader()，获取当前线程的上下文类加载器做某些事情。
  *  如果一个类由类加载器A加载，那么这个类的依赖类也是由相同的类加载器加载的（如果该依赖的类之前没有被加载过的话）
  *
- *  ContextClassLoader的左右就是为了破坏Java的类加载机制。
+ *  ContextClassLoader的作用就是为了破坏Java的类加载机制。
  *  当高层提供了统一的接口让低层去实现，同时又要在高层加载（或实例化）低层的类时，就必须要通过线程上下文类加载器
  *  来帮助高层的ClassLoader找到并加载该类。
  *
@@ -44,11 +44,12 @@ public class MyTest26 {
             class是在classPath下，需要由系统类加载器来加载，根据双亲委托机制，如果线程上下文类加载器设置成了扩展类
             加载器，那么是无法加载到classPath下的class的）
          */
-//        Thread.currentThread().setContextClassLoader(MyTest26.class.getClassLoader().getParent());
+        Thread.currentThread().setContextClassLoader(MyTest26.class.getClassLoader().getParent());
         ServiceLoader<Driver> drivers = ServiceLoader.load(Driver.class);
         drivers.forEach(driver -> {
             System.out.println("driver:" + driver.getClass() + ", loader:" + driver.getClass().getClassLoader());
         });
+        System.out.println("Current Class loader:" + MyTest26.class.getClassLoader());
         System.out.println("Current Thread context classLoader:" + Thread.currentThread().getContextClassLoader());
         System.out.println("ServiceLoader classLoader:" + ServiceLoader.class.getClassLoader());
     }

@@ -19,7 +19,7 @@ public class MyTest27 {
             DriverManager类中会执行如下方法（SPI机制加载）：ServiceLoader<Driver> loadedDrivers = ServiceLoader.load(Driver.class);
             Reflection.getCallerClass() 获取调用该方法的类
          */
-//        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.jdbc.Driver");
         /*
             1、先调用DriverManager的静态方法，通过SPI 的方式加载并初始化所有的Driver，并存在一个集合
             2、从集合中选取一个合适的Driver来与数据库创建连接（已加载的Driver与重新通过binary name加载的class相同）
