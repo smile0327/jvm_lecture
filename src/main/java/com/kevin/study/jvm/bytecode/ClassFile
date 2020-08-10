@@ -1,0 +1,88 @@
+#Java字节码文件的结构
+ClassFile{
+    u4                  magic;                              //魔数，4个字节，固定值 0xCAFEBABE
+    u2                  minor_version;                      //次版本号  2个字节
+    u2                  major_version;                      //主版本号  2个字节
+    u2                  constant_pool_count;                //常量池数量  2个字节
+    cp_info             constant[constant_pool_count - 1];  //常量池数组信息   元素个数为常量池数量-1，下标为0的元素不使用，
+                                                            //从第一个开始，结构参考常量池数据类型
+    u2                  access_flags;                       //类的访问控制权限  2个字节
+    u2                  this_class;                         //当前类名  2个字节，该值是常量池中的索引
+    u2                  supper_class;                       //父类名   2个字节，该值是常量池中的索引
+    u2                  interface_count;                    //接口数量  2个字节，不包括局部变量
+    u2                  interface[interface_count];         //接口名  如果接口数量为0，则该项值没有，直接跳过
+    u2                  fields_count;                       //域（字段）个数
+    field_info          fields[fields_count];               //域（字段）的表  数组
+    u2                  methods_count;                      //方法个数
+    method_into         methods[methods_count];             //方法表
+    u2                  attributes_count;                   //附加属性的个数
+    attribute_info      attributes[attributes_count];       //附加属性的表
+}
+
+# 字段信息
+field_info{
+    u2                  access_flags;                       //访问类型  2个字节
+    u2                  name_index;                         //名称索引  2个字节
+    u2                  descriptor_index;                   //描述符索引 2个字节
+    u2                  attributes_count;                   //属性个数  2个字节
+    attribute_info      attributes[attributes_count];       //属性表，如果属性个数为0，该值没有，跳过
+}
+
+# 方法结构
+method_info{
+    u2                  access_flags;                       //访问类型  2个字节
+    u2                  name_index;                         //名称索引  2个字节
+    u2                  descriptor_index;                   //描述符索引 2个字节
+    u2                  attributes_count;                   //属性个数   2个字节
+    attribute_info      attributes[attributes_count];       //属性表，如果属性个数为0，该值没有，跳过
+}
+
+#  方法中的属性结构
+attribute_info{
+    u2                  attribute_name_index;               //2个字节  属性名名称索引
+    u4                  attribute_length;                   //4个字节  属性长度
+    u1                  info[attribute_length];             //具体属性信息
+}
+
+# Code attribute结构
+Code_attribute{
+    u2                  attribute_name_index;               //属性名索引
+    u4                  attribute_length;                   //attribute所包含的字节数，不包含attribute_name_index和attribute_length字段
+    u2                  max_stack;                          //表示这个方法运行的任何时刻所能达到的操作数栈的最大深度
+    u2                  max_locals;                         //表示方法执行期间创建的局部变量的数目，包含用来表示传入的参数的局部变量
+    u4                  code_length;                        //表示方法所包含的字节码的字节数以及具体的指令码
+    u1                  code[code_length];                  //方法体内容，每个助记符都有对应的16进制数
+    u2                  exception_table_length;
+    {
+        u2              start_pc;                           //表示再code数组中的从start_pc开始
+        u2              end_pc;                             //到end_pc结束（不包含end_pc）的指令抛出的异常会由这个表项来处理
+        u2              handler_pc;                         //表示处理异常的代码的开始处
+        u2              catch_type;                         //表示会被处理的异常类型，指向常量池里的一个异常类。为0表示处理所有异常
+    }                   exception_table[exception_table_length];    //存放异常处理信息
+    u2                  attributes_count;                   //方法的属性个数
+    attribute_info      attributes[attribute_count];
+}
+
+# LineNumberTable attribute结构
+LineNumberTable_attribute{
+    u2                  attribute_name_index;               //名字索引
+    u4                  attribute_length;                   //长度
+    u2                  line_number_table_length;           //参数个数
+    {
+        u2              start_pc;                           //字节码偏移量
+        u2              line_number;                        //行号
+    }                   line_number_table[line_number_table_length];
+}
+
+//LocalVariableTable attribute结构
+LocalVariableTable_attribute {
+    u2                  attribute_name_index;               //名字索引
+    u4                  attribute_length;                   //长度
+    u2                  local_variable_table_length;        //参数个数
+    {   u2              start_pc;                           //开始偏移量
+        u2              length;                             //长度
+        u2              name_index;                         //名字索引
+        u2              descriptor_index;                   //描述
+        u2              index;
+    }                   local_variable_table[local_variable_table_length];
+}
