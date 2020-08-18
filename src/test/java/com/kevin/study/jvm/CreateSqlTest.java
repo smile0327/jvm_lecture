@@ -1,5 +1,9 @@
 package com.kevin.study.jvm;
 
+
+import java.io.File;
+import java.io.FileInputStream;
+
 /**
  * @Auther: kevin
  * @Description:
@@ -11,6 +15,11 @@ package com.kevin.study.jvm;
 public class CreateSqlTest {
 
     public static void main(String[] args) {
+        formatHex();
+
+    }
+
+    private static void createSql(){
         StringBuilder sb =  new StringBuilder("CREATE TABLE formula_result (");
         for (int i = 0; i < 60; i++) {
             String column = i < 10 ? "0" + i : i + "";
@@ -26,7 +35,29 @@ public class CreateSqlTest {
         sb.append("UNIQUE INDEX unique_index (`FORMULA_ID`,`OCCUR_TIME`,`DATA_TYPE`) USING BTREE").append(")").append(";");
 
         System.out.println(sb.toString());
+    }
 
+    private static void formatHex(){
+        File file = new File("D:\\code\\github\\jvm_lecture\\src\\main\\java\\com\\kevin\\study\\jvm\\bytecode\\MyTest1_class_file");
+        try (FileInputStream is = new FileInputStream(file)) {
+            int read1 = -1;
+            StringBuilder sb = new StringBuilder();
+            int index = 0;
+            do {
+                byte[] read = new byte[2];
+                read1 = is.read(read);
+                index ++;
+                sb.append(new String(read));
+                if (index % 32 == 0){
+                    sb.append("\n");
+                }else {
+                    sb.append(" ");
+                }
+            }while (read1 != -1);
+            System.out.println(sb.toString());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

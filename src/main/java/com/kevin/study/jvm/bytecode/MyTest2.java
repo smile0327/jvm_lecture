@@ -22,7 +22,18 @@ public class MyTest2 {
         in = 20;
     }
 
-    public void setX(int x) {
+    public synchronized void setX(int x) {
         this.x = x;
     }
+
+    public void test1(String str){
+        synchronized (str){
+            System.out.println("hello world");
+        }
+    }
+
+    public static synchronized void test2(){
+
+    }
+
 }
